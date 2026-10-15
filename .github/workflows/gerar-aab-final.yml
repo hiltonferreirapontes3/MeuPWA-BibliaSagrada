@@ -22,6 +22,7 @@ jobs:
 
       - name: Instalar Capacitor
         run: |
+          npm init -y
           npm install @capacitor/core @capacitor/cli @capacitor/android
           npx cap --version
 
@@ -45,8 +46,8 @@ jobs:
         run: |
           cd android
           chmod +x gradlew
-          ./gradlew assembleDebug
-          ./gradlew bundleDebug
+          ./gradlew assembleDebug --stacktrace
+          ./gradlew bundleDebug --stacktrace
           echo "=== ARQUIVOS GERADOS ==="
           find app/build -name "*.aab" -o -name "*.apk" | xargs ls -lh
 
