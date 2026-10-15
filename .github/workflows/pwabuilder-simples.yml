@@ -7,7 +7,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Setup Node 20
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 20
@@ -18,17 +20,21 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Instalar PWABuilder CLI
+      - name: Instalar PWABuilder
         run: npm install -g @pwabuilder/cli
 
-      - name: Gerar Android package
+      - name: Gerar Android
         run: |
-          mkdir output
-          npx pwabuilder https://hiltonferreirapontes3.github.io/MeuPWA-BibliaSagrada/ -p android --directory ./output --verbose
-          ls -R ./output
+          npx pwabuilder https://hiltonferreirapontes3.github.io/MeuPWA-BibliaSagrada/ -p android -d ./android-package
+          echo "=== LISTANDO ARQUIVOS ==="
+          ls -R
+          find . -name "*.aab" -o -name "*.apk" | head -20
 
-      - name: Upload resultado
+      - name: Upload AAB
         uses: actions/upload-artifact@v4
         with:
-          name: PWABuilder-Android-Package
-          path: output
+          name: AAB-Biblia-Sagrada
+          path: |
+            **/*.aab
+            **/*.apk
+          if-no-files-found: warn
