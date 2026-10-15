@@ -1,54 +1,81 @@
 {
-  "name": "Bíblia Sagrada — Fidelidade e Verdade",
-  "short_name": "Bíblia F&amp;V",
-  "description": "Bíblia Sagrada Fidelidade e Verdade, tradução de Hilton Ferreira Pontes. Leitura, busca, favoritos e anotações, sem cadastro e sem internet.",
-  "start_url": "./",
-  "scope": "./",
+  "name": "Bíblia Sagrada - Meu PWA",
+  "short_name": "Bíblia Sagrada",
+  "description": "Leia a Bíblia Sagrada offline, com favoritos e plano de leitura.",
   "display": "standalone",
-  "orientation": "any",
-  "background_color": "#FCFBF7",
-  "theme_color": "#FCFBF7",
-  "id": "/",
-  "lang": "pt-BR",
-  "dir": "ltr",
-  "categories": [
-    "books",
-    "education",
-    "lifestyle"
-  ],
+  "display_override": ["window-controls-overlay", "standalone"],
+  "background_color": "#ffffff",
+  "theme_color": "#1a1a1a",
+  "scope": "/MeuPWA-BibliaSagrada/",
+  "start_url": "/MeuPWA-BibliaSagrada/?source=pwa",
   "icons": [
     {
-      "src": "icon-192.png",
+      "src": "icons/icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "icon-512.png",
+      "src": "icons/icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
-    },
-    {
-      "src": "apple-touch-icon.png",
-      "sizes": "180x180",
-      "type": "image/png"
     }
   ],
   "screenshots": [
     {
-      "src": "screenshot-wide.png",
-      "sizes": "1280x800",
+      "src": "screenshots/desktop.png",
+      "sizes": "1280x720",
       "type": "image/png",
-      "form_factor": "wide",
-      "label": "Página inicial"
+      "form_factor": "wide"
     },
     {
-      "src": "screenshot-narrow.png",
+      "src": "screenshots/mobile.png",
       "sizes": "720x1280",
       "type": "image/png",
-      "form_factor": "narrow",
-      "label": "Leitura diária"
+      "form_factor": "narrow"
     }
-  ]
+  ],
+  "shortcuts": [
+    {
+      "name": "Continuar Leitura",
+      "short_name": "Ler",
+      "description": "Continue de onde parou",
+      "url": "/MeuPWA-BibliaSagrada/ler?source=shortcut",
+      "icons": [{ "src": "icons/book-open.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Livros da Bíblia",
+      "short_name": "Livros",
+      "url": "/MeuPWA-BibliaSagrada/livros?source=shortcut",
+      "icons": [{ "src": "icons/books.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Favoritos",
+      "short_name": "Favoritos",
+      "url": "/MeuPWA-BibliaSagrada/favoritos?source=shortcut",
+      "icons": [{ "src": "icons/heart.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Pesquisar Versículo",
+      "short_name": "Buscar",
+      "url": "/MeuPWA-BibliaSagrada/busca?source=shortcut",
+      "icons": [{ "src": "icons/search.png", "sizes": "96x96" }]
+    }
+  ],
+  "share_target": {
+    "action": "/MeuPWA-BibliaSagrada/compartilhar",
+    "method": "GET",
+    "params": {
+      "title": "title",
+      "text": "text",
+      "url": "url"
+    }
+  },
+  "edge_side_panel": {
+    "preferred_width": 400
+  },
+  "launch_handler": {
+    "client_mode": ["navigate-existing", "auto"]
+  }
 }
