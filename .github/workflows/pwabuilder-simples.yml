@@ -1,4 +1,4 @@
-name: Gerar APK AAB - PWABuilder Final
+name: Gerar AAB APK - Metodo Final Garantido
 
 on:
   workflow_dispatch:
@@ -20,30 +20,44 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Instalar PWABuilder
-        run: npm install -g @pwabuilder/cli
-
-      - name: Gerar projeto Android
+      - name: Instalar Capacitor
         run: |
-          npx pwabuilder https://hiltonferreirapontes3.github.io/MeuPWA-BibliaSagrada/ -p android -d ./pwa-android
-          echo "=== CONTEUDO GERADO ==="
-          ls -R ./pwa-android | head -n 100
+          npm install @capacitor/core @capacitor/cli @capacitor/android
+          npx cap --version
 
-      - name: Build AAB com Gradle
+      - name: Criar projeto Capacitor
         run: |
-          PROJ=$(find ./pwa-android -name "build.gradle" | head -1 | xargs dirname)
-          echo "Projeto encontrado em: $PROJ"
-          cd "$PROJ"
+          cat > capacitor.config.json << 'EOF'
+          {
+            "appId": "com.hiltonferreira.bibliafidelidadeeverdade",
+            "appName": "Biblia Sagrada FV",
+            "webDir": ".",
+            "server": {
+              "url": "https://hiltonferreirapontes3.github.io/MeuPWA-BibliaSagrada/",
+              "cleartext": true
+            }
+          }
+          EOF
+          cat capacitor.config.json
+          npx cap add android
+
+      - name: Build APK e AAB
+        run: |
+          cd android
           chmod +x gradlew
-          ./gradlew bundleRelease
-          echo "=== AABs gerados ==="
-          find . -name "*.aab" -o -name "*.apk"
+          ./gradlew assembleDebug
+          ./gradlew bundleDebug
+          echo "=== ARQUIVOS GERADOS ==="
+          find app/build -name "*.aab" -o -name "*.apk" | xargs ls -lh
 
-      - name: Upload AAB e APK
+      - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: Biblia-Sagrada-AAB-APK
-          path: |
-            **/*.aab
-            **/*.apk
-          if-no-files-found: error
+          name: APK-Biblia-FV
+          path: android/app/build/outputs/apk/debug/app-debug.apk
+
+      - name: Upload AAB
+        uses: actions/upload-artifact@v4
+        with:
+          name: AAB-Biblia-FV
+          path: android/app/build/outputs/bundle/debug/app-debug.aab
