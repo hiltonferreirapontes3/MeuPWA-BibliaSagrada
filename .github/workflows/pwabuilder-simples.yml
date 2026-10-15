@@ -1,4 +1,4 @@
-name: Gerar APK AAB - PWABuilder Simples
+name: Gerar APK AAB - PWABuilder Final
 
 on:
   workflow_dispatch:
@@ -9,7 +9,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup Node
+      - name: Setup Node 20
         uses: actions/setup-node@v4
         with:
           node-version: 20
@@ -23,18 +23,27 @@ jobs:
       - name: Instalar PWABuilder
         run: npm install -g @pwabuilder/cli
 
-      - name: Gerar Android
+      - name: Gerar projeto Android
         run: |
-          npx pwabuilder https://hiltonferreirapontes3.github.io/MeuPWA-BibliaSagrada/ -p android -d ./android-package
-          echo "=== LISTANDO ARQUIVOS ==="
-          ls -R
-          find . -name "*.aab" -o -name "*.apk" | head -20
+          npx pwabuilder https://hiltonferreirapontes3.github.io/MeuPWA-BibliaSagrada/ -p android -d ./pwa-android
+          echo "=== CONTEUDO GERADO ==="
+          ls -R ./pwa-android | head -n 100
 
-      - name: Upload AAB
+      - name: Build AAB com Gradle
+        run: |
+          PROJ=$(find ./pwa-android -name "build.gradle" | head -1 | xargs dirname)
+          echo "Projeto encontrado em: $PROJ"
+          cd "$PROJ"
+          chmod +x gradlew
+          ./gradlew bundleRelease
+          echo "=== AABs gerados ==="
+          find . -name "*.aab" -o -name "*.apk"
+
+      - name: Upload AAB e APK
         uses: actions/upload-artifact@v4
         with:
-          name: AAB-Biblia-Sagrada
+          name: Biblia-Sagrada-AAB-APK
           path: |
             **/*.aab
             **/*.apk
-          if-no-files-found: warn
+          if-no-files-found: error
