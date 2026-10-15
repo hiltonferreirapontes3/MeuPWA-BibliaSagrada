@@ -1,5 +1,5 @@
 
-name: Gerar AAB da Bíblia F&V
+name: Gerar AAB da Bíblia F&V - CORRIGIDO
 
 on:
   workflow_dispatch:
@@ -10,47 +10,39 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup Node 20
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-
       - name: Setup Java 17
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: '17'
 
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
       - name: Instalar Bubblewrap
         run: npm install -g @bubblewrap/cli
 
-      - name: Limpar pasta antiga
-        run: rm -rf twa-build
+      - name: Verificar manifest
+        run: cat twa-manifest.json
 
-      - name: Criar projeto TWA (sem perguntas)
-        run: |
-          npx @bubblewrap/cli init --manifest https://hiltonferreirapontes3.github.io/MeuPWA-BibliaSagrada/manifest.webmanifest --packageId com.hiltonferreira.bibliafidelidadeeverdade --name "Biblia Sagrada FV" --host hiltonferreirapontes3.github.io --path /MeuPWA-BibliaSagrada/ --startUrl /MeuPWA-BibliaSagrada/ --display standalone --themeColor "#FCFBF7" --backgroundColor "#FCFBF7" --directory twa-build
-          cat twa-build/twa-manifest.json || true
+      - name: Build AAB (sem perguntas)
+        run: bubblewrap build --skipPwaValidation
+        env:
+          BUBBLEWRAP_SKIP_JDK_VERSION_CHECK: "true"
 
-      - name: Gerar chave e construir AAB
-        run: |
-          cd twa-build
-          npx @bubblewrap/cli build --skipPwaValidation
+      - name: Listar arquivos
+        run: ls -lh
 
-      - name: Mostrar arquivos gerados
-        run: ls -lh twa-build/
-
-      - name: Salvar AAB na nuvem
+      - name: Upload AAB
         uses: actions/upload-artifact@v4
         with:
-          name: AAB-Biblia-FV
-          path: twa-build/app-release-bundle.aab
-          if-no-files-found: warn
+          name: AAB-Biblia-FV-Pronto
+          path: app-release-bundle.aab
 
-      - name: Salvar APK também
+      - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: APK-Biblia-FV
-          path: twa-build/app-release-signed.apk
-          if-no-files-found: warn
-          
+          name: APK-Biblia-FV-Pronto
+          path: app-release-signed.apk
