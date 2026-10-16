@@ -1,7 +1,7 @@
 {
   "name": "Bíblia Sagrada - Meu PWA",
   "short_name": "Bíblia Sagrada",
-  "description": "Leia a Bíblia Sagrada offline, com favoritos e plano de leitura.",
+  "description": "Aplicativo dedicado à divulgação da tradução Bíblia Sagrada Fidelidade e Verdade, desenvolvido para promover o estudo, a leitura e a compreensão das Sagradas Escrituras de forma acessível e fiel.",
   "display": "standalone",
   "display_override": ["window-controls-overlay", "standalone"],
   "background_color": "#ffffff",
