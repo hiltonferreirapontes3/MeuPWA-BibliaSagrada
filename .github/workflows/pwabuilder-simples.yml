@@ -1,0 +1,40 @@
+name: Gerar APK AAB - PWABuilder Simples
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Setup Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Instalar PWABuilder
+        run: npm install -g @pwabuilder/cli
+
+      - name: Gerar Android
+        run: |
+          npx pwabuilder https://hiltonferreirapontes3.github.io/MeuPWA-BibliaSagrada/ -p android -d ./android-package
+          echo "=== LISTANDO ARQUIVOS ==="
+          ls -R
+          find . -name "*.aab" -o -name "*.apk" | head -20
+
+      - name: Upload AAB
+        uses: actions/upload-artifact@v4
+        with:
+          name: AAB-Biblia-Sagrada
+          path: |
+            **/*.aab
+            **/*.apk
+          if-no-files-found: warn
