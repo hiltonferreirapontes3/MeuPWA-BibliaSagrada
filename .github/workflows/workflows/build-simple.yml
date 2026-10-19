@@ -1,0 +1,24 @@
+
+name: Build AAB - Metodo Simples (sem Bubblewrap)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Baixar PWABuilder CLI
+        run: |
+          npm install -g @pwabuilder/cli
+
+      - name: Gerar Android
+        run: |
+          pwabuilder https://hiltonferreirapontes3.github.io/MeuPWA-BibliaSagrada/ -p android -m https://hiltonferreirapontes3.github.io/MeuPWA-BibliaSagrada/manifest.webmanifest -d ./output
+          ls -R ./output
+
+      - name: Upload AAB
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-package
+          path: output
