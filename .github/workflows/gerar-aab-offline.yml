@@ -7,15 +7,14 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.2.2
       - name: Setup Node 20
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version: 20
 
       - name: Setup Java 17
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@c1e323688fd81a25caa38c78aa6df2d33d3e20d9 # v4.8.0
         with:
           distribution: temurin
           java-version: '17'
@@ -25,7 +24,7 @@ jobs:
           npm init -y
           npm install @capacitor/core @capacitor/cli @capacitor/android
 
-      - name: Criar config local (sem internet)
+      - name: Criar config local OFFLINE
         run: |
           cat > capacitor.config.json << 'EOF'
           {
@@ -35,7 +34,6 @@ jobs:
             "bundledWebRuntime": false
           }
           EOF
-          cat capacitor.config.json
           npx cap add android
 
       - name: Build APK e AAB OFFLINE
@@ -48,13 +46,13 @@ jobs:
           ls -lh app/build/outputs/bundle/debug/
 
       - name: Upload APK
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: APK-Biblia-FV-OFFLINE
           path: android/app/build/outputs/apk/debug/app-debug.apk
 
       - name: Upload AAB
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: AAB-Biblia-FV-OFFLINE
           path: android/app/build/outputs/bundle/debug/app-debug.aab
