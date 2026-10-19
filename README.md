@@ -1,4 +1,3 @@
-[![Gerar APK AAB - PWABuilder Simples](https://github.com/hiltonferreirapontes3/MeuPWA-BibliaSagrada/actions/workflows/pwabuilder-simples.yml/badge.svg?branch=main&event=push)](https://github.com/hiltonferreirapontes3/MeuPWA-BibliaSagrada/actions/workflows/pwabuilder-simples.yml)
 # Bíblia Sagrada Fidelidade e Verdade - PWA
 
 ## 📖 Sobre
